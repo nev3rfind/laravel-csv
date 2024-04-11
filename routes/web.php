@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/upload-csv', function () {
+    return view('upload');
+});
+
+Route::post('/csv/upload', [CsvFileController::class, 'upload'])->name('csv.upload');
+
