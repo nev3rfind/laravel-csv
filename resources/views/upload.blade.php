@@ -4,57 +4,86 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel CSV Upload</title>
-    <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <!-- Styles -->
     <style>
         body, html {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
+            background: #f4f4f4;
+            color: #333;
         }
         .container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
+            padding-top: 50px;
         }
         .card {
             background: white;
-            border-radius: 15px;
+            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 300px;
-            max-width: 90%;
+            width: 60%;
+            max-width: 80%;
+            margin: 10px;
         }
         .title {
-            font-size: 24px;
-            color: #333;
+            font-size: 20px;
             text-align: center;
             margin-bottom: 20px;
         }
-        .form-group {
+        .form-group, .table-container {
             margin-bottom: 20px;
         }
-        .form-control {
+        .form-control, .btn, .table {
             width: 100%;
-            padding: 10px;
+        }
+        .form-control {
             border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 10px 0;
         }
         .btn {
-            width: 100%;
-            background-color: #4CAF50;
+            background-color: #007BFF;
             color: white;
             padding: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            text-align: center;
         }
         .btn:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
+        }
+        .alert {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table th, .table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        ul {
+            list-style-type: none;
         }
     </style>
 </head>
@@ -67,6 +96,15 @@
                     {{ session('status') }}
                 </div>
             @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form action="{{ route('csv.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
@@ -74,6 +112,29 @@
                 </div>
                 <button type="submit" class="btn">Upload</button>
             </form>
+        </div>
+        <div class="card table-container">
+            <div class="title">Uploaded Files Status</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Date uploaded</th>
+                        <th>Status</th>
+                        <th>Error Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($csvImports as $import)
+                    <tr>
+                        <td>{{ $import->filename }}</td>
+                        <td>{{ $import->created_at }}</td>
+                        <td>{{ $import->status }}</td>
+                        <td>{{ $import->error_message ?? 'N/A' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
