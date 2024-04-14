@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ValidateCsvImportJob implements ShouldQueue
 {
+    // Traits to handle queue job efficiently
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $csvImport;
@@ -32,6 +33,8 @@ class ValidateCsvImportJob implements ShouldQueue
      * Execute the job.
      *
      * Handles the validation of the CSV file and updates the CsvImport model's status accordingly.
+     * Goes well with OCP - job class can eb extended without modifying existing code - just add a new service or a method
+     * DIP - Depends on asbtraction CSSVReader and CSVValidator rather than concrete implementation 
      */
     public function handle(CSVReader $csvReader, CSVValidator $csvValidator)
     {
@@ -55,7 +58,9 @@ class ValidateCsvImportJob implements ShouldQueue
             
         } catch (\Exception $e) {
             $this->csvImport->update(['status' => 'failed', 'error_message' => $e->getMessage()]);
-            Storage::delete($this->csvImport->filename);  // Cleanup the file if validation fails
+            
+            // Cleanup the file if validation fails
+            Storage::delete($this->csvImport->filename);
         }
     }
 }

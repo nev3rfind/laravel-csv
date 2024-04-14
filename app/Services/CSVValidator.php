@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\LazyCollection;
 
+// Only responsiple for validating data inside (SRP)
 class CSVValidator
 {
     public function validateHeaders(array $headers): bool
@@ -15,6 +16,7 @@ class CSVValidator
 
     public function validate(LazyCollection $rows, array $headers): void
     {
+        // Iterates through each row and creates a validator instance 
         $rows ->each(function ($row, $key) use ($headers) {
             $validator = Validator::make($row, [
                 'SKU' => 'required|string|max:255',

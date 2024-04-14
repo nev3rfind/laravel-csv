@@ -9,6 +9,7 @@ class CSVReader
 {
     /**
      * Read a CSV file into a lazy collection.
+     * LSP - this service should be easily substituted by another similar service as logn as it adheres same interface (returns LazyColection)
      *
      * @param string $path Relative path within the 'public' disk
      * @return LazyCollection
@@ -30,7 +31,7 @@ class CSVReader
             throw new \RuntimeException("Cannot read headers from file at path: {$fullPath}");
         }
 
-        // Create a LazyCollection to handle the file reading
+        // Create a LazyCollection to handle the file reading - processing one item at a time - reduce memory usage
         $lazyCollection = LazyCollection::make(function () use ($handle, $headers) {
             while (($row = fgetcsv($handle)) !== false) {
                 yield array_combine($headers, $row);

@@ -7,28 +7,17 @@ use App\Models\CsvImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UploadCsvRequest;
 
 class CsvFileController extends Controller
 {
-    public function upload(Request $request)
+    public function upload(UploadCsvRequest $request)
     {
-        $messages = [
-            'csv_file.required' => 'File was not provided.',
-            'csv_file.file' => 'The provided file was not valid.',
-            'csv_file.mimes' => 'Only CSV and TXT files are allowed to upload.',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'csv_file' => 'required|file|mimes:csv,txt',
-        ], $messages);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
         $file = $request->file('csv_file');
+        // Will be stored in var/www/html/laravel-csv/storage/app/public/csv_files
         $path = $file->store('csv_files', 'public');
 
+        // Update file import status
         $csvImport = CsvImport::create([
             'filename' => $path,
             'status' => 'pending'
@@ -36,8 +25,6 @@ class CsvFileController extends Controller
 
         // Dispatch the validation job with the CsvImport record
         ValidateCsvImportJob::dispatch($csvImport);
-
-        dispatch(new ValidateCsvImportJob($csvImport));
 
         return back()->with('status', 'File uploaded successfully! Validation is in progress.');
     }
