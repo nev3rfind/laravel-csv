@@ -7,9 +7,13 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Application look:
+![image](https://github.com/nev3rfind/laravel-csv/assets/57880277/0815d20b-fd80-4d02-bd5f-cb9536b760b0)
+
+
 ## Installation
 
-To run a local copy please follwo those steps:
+To run a local copy please follow those steps:
 
 Clone repository:
 
@@ -59,3 +63,21 @@ Also run 3 tests:
 ```
 php artisan test
 ```
+
+![image](https://github.com/nev3rfind/laravel-csv/assets/57880277/e8920dfa-0d18-4273-a2db-616d1574d81e)
+
+
+## API Testing
+
+I used POSTMAN
+
+First need to register:
+![image](https://github.com/nev3rfind/laravel-csv/assets/57880277/71252f11-06a5-46c0-b8db-3c8a03bdb5a8)
+
+Then login to get a token (Bearer):
+![image](https://github.com/nev3rfind/laravel-csv/assets/57880277/a2032db9-9a79-4fc0-b0f4-e3f2bb76fefd)
+
+Add authorization token and fetch product:
+![image](https://github.com/nev3rfind/laravel-csv/assets/57880277/70d6fa77-ae9a-48a1-b558-3ffed55ff62f)
+
+
