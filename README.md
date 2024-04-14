@@ -36,6 +36,12 @@ Generate application key:
 ./vendor/bin/sail artisan key:generate
 ```
 
+Create migration for queue jobs (actually already there, it was only ran initially)
+
+```
+php artisan queue:table
+```
+
 Migrations:
 
 ```
@@ -46,4 +52,10 @@ Run queue worker:
 
 ```
 ./vendor/bin/sail artisan queue:work
+```
+
+Also run 3 tests:
+
+```
+php artisan test
 ```

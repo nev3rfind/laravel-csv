@@ -19,7 +19,10 @@ class ProductApiController extends Controller
         $cacheKey = 'product_'.$sku;
         // Attempt to retrieve product from the cache 
         $product = Cache::remember($cacheKey, 60, function () use ($sku) {
-            return Product::where('sku', $sku)->first()->toArray();
+            // Converting to array so it`s easier to test later on
+            $product = Product::where('sku', $sku)->first();
+            // Check if exists before converting
+            return $product ? $product->toArray() : null;
         });
 
         if (!$product) {

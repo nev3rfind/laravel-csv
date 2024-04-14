@@ -10,6 +10,8 @@ class ProductImporter
     public function importRow(array $row)
     {
         try {
+            // If product with the specified SKU exists, then it updates it
+            // if not, it creates a new product record.
             Product::updateOrCreate(
                 ['sku' => $row['SKU']],
                 [

@@ -37,7 +37,7 @@ class CsvImportTest extends TestCase
             'csv_file' => $file,
         ]);
 
-        // Assert the file was uploaded and redirection is returned
+        // Assert the file was uploded and redirection is returned
         $response->assertStatus(302);
 
         // Assert a CsvImport record was created

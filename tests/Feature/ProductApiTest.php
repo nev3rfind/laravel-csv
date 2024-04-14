@@ -17,6 +17,7 @@ class ProductCacheTest extends TestCase
     {
         // Create a new user and a product with a known SKU
         $user = User::factory()->create([
+            // Not necessary to encrypt but jwt might not like it othwerwise
             'password' => bcrypt($password = 'mkm-user-test'),
         ]);
 
@@ -51,7 +52,7 @@ class ProductCacheTest extends TestCase
             'Authorization' => 'Bearer ' . $token,
         ])->json('GET', "/api/product/{$product->sku}");
 
-        // If initial product 
+        // Check that the product data retireved from the cache matches the original product data (problems with formating solved)
         $this->assertEquals($product->toArray(), (array) $cachedProduct);
     }
 }
